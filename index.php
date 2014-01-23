@@ -10,7 +10,6 @@
 	<title>Adventure</title>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="jquery.gamequery-0.7.1.js"></script>
 	<style>
 		#screen {
 			width: 400px;
@@ -61,20 +60,7 @@
 	</select>
 	<input type="button" id="selectLevel" value="<?php echo getLabel('select_level', $labels) ?>"/>
 	<div id="screen">
-		<?php
-			/*
-for ($rowScreen = 0; $rowScreen < 20; $rowScreen++) {
-				for ($colScreen = 0; $colScreen < 20; $colScreen++) {
-					if ($colScreen % 2) {
-						echo '<div class="grid"></div>';
-					} else {
-						echo '<div class="grid grey"></div>';
-					}
-				}
-				echo '<div class="clear"></div>';
-			}
-*/
-		?>
+		
 	</div>
 	<script src="js/main.js"></script>
 </body>
