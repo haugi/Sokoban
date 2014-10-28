@@ -6,6 +6,9 @@ const DOWN = 40;
 var levelArray;
 var currentPlayerRow;
 var currentPlayerCol;
+var previousPositionRow;
+var previousPositionCol;
+var previousPositionType;
 
 $(document).ready(function() {
 	$.post('loadLevel.php', { level: '1'}).done(function(data) {
@@ -17,18 +20,19 @@ $(document).ready(function() {
 	$(document).keydown(function(e) { 
 		if (!collision(e.keyCode)) {
 			console.log("move");
+		} else {
+			console.log('wall hit');
 		}
 	});
 });
 
 function drawLevel(level) {
-	console.log(level);
+	//console.log(level);
 	/*
-var maxCol = level.maxCol;
-	var maxRow = level.maxRow;
-*/
+	* var maxCol = level.maxCol;
+	* var maxRow = level.maxRow;
+	*/
 	var template = level.level;
-	
 	
 	var currentRow = 0;
 	var currentCol = 0;
@@ -62,6 +66,12 @@ var maxCol = level.maxCol;
 		}
 		
 		$('#screen').append('<div class="' + cssClass + '"></div>');
+	}
+	
+	if (previousPositionCol == undefined) {
+		previousPositionCol = currentPlayerCol;
+		previousPositionRow = currentPlayerRow;
+		previousPositionType = ' ';
 	}
 }
 
@@ -124,23 +134,34 @@ function boxCollision() {
 }
 
 function moveBox() {
+	console.log('boxMove');
 	return false;
 }
 
 function movePlayer(direction) {
+	
+	levelArray[currentPlayerRow][currentPlayerCol] = previousPositionType;
 	if (direction == LEFT) {
+		previousPositionType = levelArray[currentPlayerRow][currentPlayerCol - 1];
 		levelArray[currentPlayerRow][currentPlayerCol - 1] = '@';
-		levelArray[currentPlayerRow][currentPlayerCol] = ' ';
+		//levelArray[currentPlayerRow][currentPlayerCol] = ' ';
 	} else if (direction == RIGHT) {
+		previousPositionType = levelArray[currentPlayerRow][currentPlayerCol + 1];
 		levelArray[currentPlayerRow][currentPlayerCol + 1] = '@';
-		levelArray[currentPlayerRow][currentPlayerCol] = ' ';
+		//levelArray[currentPlayerRow][currentPlayerCol] = ' ';
 	} else if (direction == TOP) {
+		previousPositionType = levelArray[currentPlayerRow - 1][currentPlayerCol];
 		levelArray[currentPlayerRow - 1][currentPlayerCol] = '@';
-		levelArray[currentPlayerRow][currentPlayerCol] = ' ';
+		//levelArray[currentPlayerRow][currentPlayerCol] = ' ';
 	} else if (direction == DOWN) {
+		previousPositionType = levelArray[currentPlayerRow + 1][currentPlayerCol];
 		levelArray[currentPlayerRow + 1][currentPlayerCol] = '@';
-		levelArray[currentPlayerRow][currentPlayerCol] = ' ';
+		//levelArray[currentPlayerRow][currentPlayerCol] = ' ';
 	}
+	
+	previousPositionCol = currentPlayerCol;
+	previousPositionRow = currentPlayerRow;
+	
 	
 	newLevel = Object();
 	var levelString = '';
